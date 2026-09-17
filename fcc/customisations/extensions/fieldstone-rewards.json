@@ -5,7 +5,7 @@
   "acceptedVersion": "1.4.0",
   "apiUrl": "http://localhost:4500",
   "ownAddress": "http://localhost:4500",
-  "webhookUrl": "http://localhost:4500/hooks/fcc",
+  "webhookUrl": "http://localhost:3000/api/extensions/reference-receiver",
   "contributes": [
     "checkout"
   ],

@@ -11,7 +11,7 @@ allowed to do; the code belongs to whoever wrote the service.
 | Version accepted | `1.4.0` |
 | Called synchronously at | `http://localhost:4500` |
 | Address | this tenant's own instance |
-| Told about events at | `http://localhost:4500/hooks/fcc` |
+| Told about events at | `http://localhost:3000/api/extensions/reference-receiver` |
 | Contributes to | checkout |
 | Subscribed events | order.placed |
 | Scopes granted | order-management:view |
