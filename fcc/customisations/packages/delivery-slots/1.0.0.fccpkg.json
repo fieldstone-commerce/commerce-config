@@ -6,501 +6,9 @@
     "version": "1.0.0",
     "requiresApi": "v1",
     "originTenant": "fieldstone-dev",
-    "exportedAt": "2026-09-22T17:04:49.035Z"
+    "exportedAt": "2026-09-22T18:28:44.440Z"
   },
   "elements": [
-    {
-      "kind": "agent",
-      "refKey": "demo-campaign-critic",
-      "payload": {
-        "name": "Campaign Critic",
-        "description": "Reviews campaign spend against return and says what to cut.",
-        "tier": "assisted",
-        "riskTier": "medium",
-        "systemPrompt": "You are Campaign Critic. Reviews campaign spend against return and says what to cut. Propose; never act without approval.",
-        "capabilities": [
-          "read",
-          "propose"
-        ],
-        "triggers": [
-          "manual",
-          "schedule"
-        ],
-        "subscribedEvents": [],
-        "evalCases": [
-          {
-            "prompt": "A rug in Home & Living promises delivery in nine days.",
-            "expect": "flagged, because Home & Living allows five"
-          }
-        ],
-        "purpose": "Compares campaign spend against attributed return and names the ones to stop.",
-        "limitations": "Sees attributed revenue only. A campaign that built demand somebody acted on a week later, through another channel, looks like waste here.",
-        "pinnedModel": null
-      }
-    },
-    {
-      "kind": "agent",
-      "refKey": "demo-cart-rescuer",
-      "payload": {
-        "name": "Cart Rescuer",
-        "description": "Spots abandoned carts worth a nudge and drafts it.",
-        "tier": "assisted",
-        "riskTier": "medium",
-        "systemPrompt": "You are Cart Rescuer. Spots abandoned carts worth a nudge and drafts it. Propose; never act without approval.",
-        "capabilities": [
-          "read",
-          "propose"
-        ],
-        "triggers": [
-          "manual",
-          "schedule"
-        ],
-        "subscribedEvents": [],
-        "evalCases": [],
-        "purpose": "Finds abandoned baskets worth recovering and drafts the message.",
-        "limitations": "Cannot tell an abandoned basket from one somebody is still thinking about, or from a shopper who bought the same thing in a shop an hour later.",
-        "pinnedModel": null
-      }
-    },
-    {
-      "kind": "agent",
-      "refKey": "demo-category-scout",
-      "payload": {
-        "name": "Category Scout",
-        "description": "Finds categories with demand the catalogue does not serve.",
-        "tier": "supervised",
-        "riskTier": "medium",
-        "systemPrompt": "You are Category Scout. Finds categories with demand the catalogue does not serve. Propose; never act without approval.",
-        "capabilities": [
-          "read",
-          "propose"
-        ],
-        "triggers": [
-          "manual",
-          "schedule"
-        ],
-        "subscribedEvents": [],
-        "evalCases": [],
-        "purpose": "Finds searches and demand signals the catalogue has no answer for.",
-        "limitations": "Sees demand that reached this shop. It cannot see a category customers never thought to look here for.",
-        "pinnedModel": null
-      }
-    },
-    {
-      "kind": "agent",
-      "refKey": "demo-courier-picker",
-      "payload": {
-        "name": "Courier Picker",
-        "description": "Chooses a courier per shipment on cost and reliability.",
-        "tier": "supervised",
-        "riskTier": "medium",
-        "systemPrompt": "You are Courier Picker. Chooses a courier per shipment on cost and reliability. Propose; never act without approval.",
-        "capabilities": [
-          "read",
-          "propose"
-        ],
-        "triggers": [
-          "manual",
-          "schedule"
-        ],
-        "subscribedEvents": [],
-        "evalCases": [],
-        "purpose": "Picks a courier for each shipment from recorded cost and delivered-on-time history.",
-        "limitations": "Reasons from past performance on this lane, which is not a forecast. It cannot see a strike, a closed road, or a courier who has just lost a depot.",
-        "pinnedModel": null
-      }
-    },
-    {
-      "kind": "agent",
-      "refKey": "demo-fraud-explainer",
-      "payload": {
-        "name": "Fraud Explainer",
-        "description": "Says in plain words why an order was held.",
-        "tier": "assisted",
-        "riskTier": "medium",
-        "systemPrompt": "You are Fraud Explainer. Says in plain words why an order was held. Propose; never act without approval.",
-        "capabilities": [
-          "read",
-          "propose"
-        ],
-        "triggers": [
-          "manual",
-          "schedule"
-        ],
-        "subscribedEvents": [],
-        "evalCases": [],
-        "purpose": "Explains, in a sentence a support agent can read to a customer, why an order was held.",
-        "limitations": "Explains the decision; it does not make or review it. If the rule that held the order was wrong, this will explain the wrong rule clearly.",
-        "pinnedModel": null
-      }
-    },
-    {
-      "kind": "agent",
-      "refKey": "demo-listing-doctor",
-      "payload": {
-        "name": "Listing Doctor",
-        "description": "Rewrites thin titles and flags missing attributes.",
-        "tier": "assisted",
-        "riskTier": "medium",
-        "systemPrompt": "You are Listing Doctor. Rewrites thin titles and flags missing attributes. Propose; never act without approval.",
-        "capabilities": [
-          "read",
-          "propose"
-        ],
-        "triggers": [
-          "manual",
-          "schedule"
-        ],
-        "subscribedEvents": [],
-        "evalCases": [],
-        "purpose": "Improves listing titles and names the attributes a category expects and a listing lacks.",
-        "limitations": "Judges the words, not the product. It cannot tell whether a claim in a title is true, and it does not look at the image.",
-        "pinnedModel": null
-      }
-    },
-    {
-      "kind": "agent",
-      "refKey": "demo-margin-watch",
-      "payload": {
-        "name": "Margin Watch",
-        "description": "Alerts when a promotion would sell below the floor.",
-        "tier": "assisted",
-        "riskTier": "medium",
-        "systemPrompt": "You are Margin Watch. Alerts when a promotion would sell below the floor. Propose; never act without approval.",
-        "capabilities": [
-          "read",
-          "propose"
-        ],
-        "triggers": [
-          "manual",
-          "schedule"
-        ],
-        "subscribedEvents": [],
-        "evalCases": [],
-        "purpose": "Warns before a promotion takes a SKU under its floor margin.",
-        "limitations": "Uses the cost recorded against the SKU. It cannot see supplier rebates, freight billed separately, or a cost that changed after the last import.",
-        "pinnedModel": null
-      }
-    },
-    {
-      "kind": "agent",
-      "refKey": "demo-payout-reconciler",
-      "payload": {
-        "name": "Payout Reconciler",
-        "description": "Matches settlement to gateway and reports the gap.",
-        "tier": "assisted",
-        "riskTier": "medium",
-        "systemPrompt": "You are Payout Reconciler. Matches settlement to gateway and reports the gap. Propose; never act without approval.",
-        "capabilities": [
-          "read",
-          "propose"
-        ],
-        "triggers": [
-          "manual",
-          "schedule"
-        ],
-        "subscribedEvents": [],
-        "evalCases": [],
-        "purpose": "Matches each settlement against the gateway's own record and reports where they disagree.",
-        "limitations": "Reports the gap; it does not decide who is right. A timing difference across a cutoff and a genuine shortfall look the same to it.",
-        "pinnedModel": null
-      }
-    },
-    {
-      "kind": "agent",
-      "refKey": "demo-refund-triage",
-      "payload": {
-        "name": "Refund Triage",
-        "description": "Decides which refund requests can be auto-approved.",
-        "tier": "assisted",
-        "riskTier": "medium",
-        "systemPrompt": "You are Refund Triage. Decides which refund requests can be auto-approved. Propose; never act without approval.",
-        "capabilities": [
-          "read",
-          "propose"
-        ],
-        "triggers": [
-          "manual",
-          "schedule"
-        ],
-        "subscribedEvents": [],
-        "evalCases": [],
-        "purpose": "Sorts refund requests into those that clearly meet policy and those a person should read.",
-        "limitations": "Reads the request and the order, not the item. It cannot tell a genuine fault from a change of mind described as one, and it never sees the returned goods.",
-        "pinnedModel": null
-      }
-    },
-    {
-      "kind": "agent",
-      "refKey": "demo-seller-scorecard",
-      "payload": {
-        "name": "Seller Scorecard",
-        "description": "Builds the weekly seller performance summary.",
-        "tier": "supervised",
-        "riskTier": "medium",
-        "systemPrompt": "You are Seller Scorecard. Builds the weekly seller performance summary. Propose; never act without approval.",
-        "capabilities": [
-          "read",
-          "propose"
-        ],
-        "triggers": [
-          "manual",
-          "schedule"
-        ],
-        "subscribedEvents": [],
-        "evalCases": [],
-        "purpose": "Assembles each seller's week: fulfilment, returns, ratings and disputes, in one place.",
-        "limitations": "Counts what the platform recorded. A seller resolving a problem off-platform looks identical to one who had no problem.",
-        "pinnedModel": null
-      }
-    },
-    {
-      "kind": "agent",
-      "refKey": "demo-stock-chaser",
-      "payload": {
-        "name": "Stock Chaser",
-        "description": "Watches velocity against cover and asks the buyer to reorder.",
-        "tier": "assisted",
-        "riskTier": "medium",
-        "systemPrompt": "You are Stock Chaser. Watches velocity against cover and asks the buyer to reorder. Propose; never act without approval.",
-        "capabilities": [
-          "read",
-          "propose"
-        ],
-        "triggers": [
-          "manual",
-          "schedule"
-        ],
-        "subscribedEvents": [],
-        "evalCases": [],
-        "purpose": "Flags SKUs whose cover will run out before the next delivery lands, and drafts the reorder for a buyer to send.",
-        "limitations": "Trusts the recorded stock figure — it cannot detect shrinkage, damage, or a miscount at the source. It does not know about deliveries agreed by phone and not yet in the system.",
-        "pinnedModel": null
-      }
-    },
-    {
-      "kind": "agent",
-      "refKey": "demo-ticket-summariser",
-      "payload": {
-        "name": "Ticket Summariser",
-        "description": "Condenses a long ticket thread for whoever picks it up.",
-        "tier": "assisted",
-        "riskTier": "medium",
-        "systemPrompt": "You are Ticket Summariser. Condenses a long ticket thread for whoever picks it up. Propose; never act without approval.",
-        "capabilities": [
-          "read",
-          "propose"
-        ],
-        "triggers": [
-          "manual",
-          "schedule"
-        ],
-        "subscribedEvents": [],
-        "evalCases": [],
-        "purpose": "Summarises a long support thread for whoever picks it up next.",
-        "limitations": "Summarises what is written in the ticket. A promise made on a phone call, or a detail somebody never typed, is not in the thread and will not be in the summary.",
-        "pinnedModel": null
-      }
-    },
-    {
-      "kind": "agent",
-      "refKey": "festive-stock-watch",
-      "payload": {
-        "name": "Festive Stock Watch",
-        "description": "Warn when a festive-season line is going to sell out before the campaign ends.",
-        "tier": "domain",
-        "riskTier": "medium",
-        "systemPrompt": "You are Festive Stock Watch for this merchant. Warn when a festive-season line is going to sell out before the campaign ends. Use the tools you are given; never state a figure you have not read from one.",
-        "capabilities": [
-          "fcc_warehouse_management_view",
-          "fcc_catalog_management_view"
-        ],
-        "triggers": [
-          "stock.movement",
-          "product.status_changed"
-        ],
-        "subscribedEvents": [
-          "stock.movement",
-          "product.status_changed"
-        ],
-        "evalCases": [],
-        "purpose": "Warn when a festive-season line is going to sell out before the campaign ends.",
-        "limitations": "Read-only. Reports what it found and changes nothing.",
-        "pinnedModel": null
-      }
-    },
-    {
-      "kind": "agent",
-      "refKey": "late-delivery-triage",
-      "payload": {
-        "name": "Late Delivery Triage",
-        "description": "Open a ticket and notify the customer when a shipment misses its promise date.",
-        "tier": "domain",
-        "riskTier": "high",
-        "systemPrompt": "You are Late Delivery Triage for this merchant. Open a ticket and notify the customer when a shipment misses its promise date. Use the tools you are given; never state a figure you have not read from one.",
-        "capabilities": [
-          "fcc_fulfillment_view",
-          "fcc_support_management_configure"
-        ],
-        "triggers": [
-          "shipment.status_changed"
-        ],
-        "subscribedEvents": [
-          "shipment.status_changed"
-        ],
-        "evalCases": [],
-        "purpose": "Open a ticket and notify the customer when a shipment misses its promise date.",
-        "limitations": "Proposes; a human approves every write.",
-        "pinnedModel": null
-      }
-    },
-    {
-      "kind": "agent",
-      "refKey": "margin-guard",
-      "payload": {
-        "name": "Margin Guard",
-        "description": "Flag any repricing that would take a SKU below its floor margin.",
-        "tier": "domain",
-        "riskTier": "high",
-        "systemPrompt": "You are Margin Guard for this merchant. Flag any repricing that would take a SKU below its floor margin. Use the tools you are given; never state a figure you have not read from one.",
-        "capabilities": [
-          "fcc_dynamic_pricing_view",
-          "fcc_pricing_optimizer_view"
-        ],
-        "triggers": [
-          "price.changed"
-        ],
-        "subscribedEvents": [
-          "price.changed"
-        ],
-        "evalCases": [],
-        "purpose": "Flag any repricing that would take a SKU below its floor margin.",
-        "limitations": "Proposes; a human approves every write.",
-        "pinnedModel": null
-      }
-    },
-    {
-      "kind": "agent",
-      "refKey": "payment-failure-digest",
-      "payload": {
-        "name": "Payment Failure Digest",
-        "description": "Group the day's payment failures by gateway reason and report the pattern.",
-        "tier": "domain",
-        "riskTier": "medium",
-        "systemPrompt": "You are Payment Failure Digest for this merchant. Group the day's payment failures by gateway reason and report the pattern. Use the tools you are given; never state a figure you have not read from one.",
-        "capabilities": [
-          "fcc_payments_view"
-        ],
-        "triggers": [
-          "payment.failed"
-        ],
-        "subscribedEvents": [
-          "payment.failed"
-        ],
-        "evalCases": [],
-        "purpose": "Group the day's payment failures by gateway reason and report the pattern.",
-        "limitations": "Read-only. Reports what it found and changes nothing.",
-        "pinnedModel": null
-      }
-    },
-    {
-      "kind": "agent",
-      "refKey": "review-tone-watch",
-      "payload": {
-        "name": "Review Tone Watch",
-        "description": "Summarise the week's reviews and surface the recurring complaint.",
-        "tier": "domain",
-        "riskTier": "low",
-        "systemPrompt": "You are Review Tone Watch for this merchant. Summarise the week's reviews and surface the recurring complaint. Use the tools you are given; never state a figure you have not read from one.",
-        "capabilities": [
-          "fcc_ratings_reviews_view"
-        ],
-        "triggers": [
-          "review.submitted"
-        ],
-        "subscribedEvents": [
-          "review.submitted"
-        ],
-        "evalCases": [],
-        "purpose": "Summarise the week's reviews and surface the recurring complaint.",
-        "limitations": "Read-only. Reports what it found and changes nothing.",
-        "pinnedModel": null
-      }
-    },
-    {
-      "kind": "agent",
-      "refKey": "search-miss-report",
-      "payload": {
-        "name": "Search Miss Report",
-        "description": "Report searches that returned nothing, so the catalogue team can act.",
-        "tier": "domain",
-        "riskTier": "low",
-        "systemPrompt": "You are Search Miss Report for this merchant. Report searches that returned nothing, so the catalogue team can act. Use the tools you are given; never state a figure you have not read from one.",
-        "capabilities": [
-          "fcc_smart_search_view",
-          "fcc_catalog_management_view"
-        ],
-        "triggers": [
-          "search.performed"
-        ],
-        "subscribedEvents": [
-          "search.performed"
-        ],
-        "evalCases": [],
-        "purpose": "Report searches that returned nothing, so the catalogue team can act.",
-        "limitations": "Read-only. Reports what it found and changes nothing.",
-        "pinnedModel": null
-      }
-    },
-    {
-      "kind": "agent",
-      "refKey": "seller-onboarding-nudge",
-      "payload": {
-        "name": "Seller Onboarding Nudge",
-        "description": "Chase sellers who started onboarding and stalled on documents.",
-        "tier": "domain",
-        "riskTier": "low",
-        "systemPrompt": "You are Seller Onboarding Nudge for this merchant. Chase sellers who started onboarding and stalled on documents. Use the tools you are given; never state a figure you have not read from one.",
-        "capabilities": [
-          "fcc_seller_onboarding_view"
-        ],
-        "triggers": [
-          "application.submitted"
-        ],
-        "subscribedEvents": [
-          "application.submitted"
-        ],
-        "evalCases": [],
-        "purpose": "Chase sellers who started onboarding and stalled on documents.",
-        "limitations": "Read-only. Reports what it found and changes nothing.",
-        "pinnedModel": null
-      }
-    },
-    {
-      "kind": "agent",
-      "refKey": "settlement-variance",
-      "payload": {
-        "name": "Settlement Variance",
-        "description": "Explain why a seller's payout differs from the previous cycle.",
-        "tier": "domain",
-        "riskTier": "high",
-        "systemPrompt": "You are Settlement Variance for this merchant. Explain why a seller's payout differs from the previous cycle. Use the tools you are given; never state a figure you have not read from one.",
-        "capabilities": [
-          "fcc_settlements_view",
-          "fcc_order_management_view"
-        ],
-        "triggers": [
-          "settlement.batch_processed"
-        ],
-        "subscribedEvents": [
-          "settlement.batch_processed"
-        ],
-        "evalCases": [],
-        "purpose": "Explain why a seller's payout differs from the previous cycle.",
-        "limitations": "Proposes; a human approves every write.",
-        "pinnedModel": null
-      }
-    },
     {
       "kind": "branding",
       "refKey": "default",
@@ -906,28 +414,6 @@
       }
     },
     {
-      "kind": "extension",
-      "refKey": "Fieldstone Rewards",
-      "payload": {
-        "name": "Fieldstone Rewards",
-        "description": "Fieldstone's own loyalty scheme. Points earned on paid orders, redeemed at checkout. Built by Fieldstone on the platform APIs.",
-        "publisherId": "cmtn1bfi700top08o7sl12jjs",
-        "acceptedVersion": "1.4.0",
-        "apiUrl": "http://localhost:4500",
-        "ownAddress": "http://localhost:4500",
-        "webhookUrl": "http://localhost:3000/api/extensions/reference-receiver",
-        "contributes": [
-          "checkout"
-        ],
-        "webhooks": [
-          "order.placed"
-        ],
-        "scopes": [
-          "order-management:view"
-        ]
-      }
-    },
-    {
       "kind": "feature-flag",
       "refKey": "phase-14-audit-log",
       "payload": {
@@ -1072,6 +558,588 @@
       }
     },
     {
+      "kind": "agent",
+      "refKey": "demo-campaign-critic",
+      "payload": {
+        "name": "Campaign Critic",
+        "description": "Reviews campaign spend against return and says what to cut.",
+        "tier": "assisted",
+        "riskTier": "medium",
+        "systemPrompt": "You are Campaign Critic. Reviews campaign spend against return and says what to cut. Propose; never act without approval.",
+        "capabilities": [
+          "read",
+          "propose"
+        ],
+        "triggers": [
+          "manual",
+          "schedule"
+        ],
+        "subscribedEvents": [],
+        "evalCases": [
+          {
+            "prompt": "A rug in Home & Living promises delivery in nine days.",
+            "expect": "flagged, because Home & Living allows five"
+          }
+        ],
+        "purpose": "Compares campaign spend against attributed return and names the ones to stop.",
+        "limitations": "Sees attributed revenue only. A campaign that built demand somebody acted on a week later, through another channel, looks like waste here.",
+        "pinnedModel": null
+      }
+    },
+    {
+      "kind": "agent",
+      "refKey": "demo-cart-rescuer",
+      "payload": {
+        "name": "Cart Rescuer",
+        "description": "Spots abandoned carts worth a nudge and drafts it.",
+        "tier": "assisted",
+        "riskTier": "medium",
+        "systemPrompt": "You are Cart Rescuer. Spots abandoned carts worth a nudge and drafts it. Propose; never act without approval.",
+        "capabilities": [
+          "read",
+          "propose"
+        ],
+        "triggers": [
+          "manual",
+          "schedule"
+        ],
+        "subscribedEvents": [],
+        "evalCases": [],
+        "purpose": "Finds abandoned baskets worth recovering and drafts the message.",
+        "limitations": "Cannot tell an abandoned basket from one somebody is still thinking about, or from a shopper who bought the same thing in a shop an hour later.",
+        "pinnedModel": null
+      }
+    },
+    {
+      "kind": "agent",
+      "refKey": "demo-category-scout",
+      "payload": {
+        "name": "Category Scout",
+        "description": "Finds categories with demand the catalogue does not serve.",
+        "tier": "supervised",
+        "riskTier": "medium",
+        "systemPrompt": "You are Category Scout. Finds categories with demand the catalogue does not serve. Propose; never act without approval.",
+        "capabilities": [
+          "read",
+          "propose"
+        ],
+        "triggers": [
+          "manual",
+          "schedule"
+        ],
+        "subscribedEvents": [],
+        "evalCases": [],
+        "purpose": "Finds searches and demand signals the catalogue has no answer for.",
+        "limitations": "Sees demand that reached this shop. It cannot see a category customers never thought to look here for.",
+        "pinnedModel": null
+      }
+    },
+    {
+      "kind": "agent",
+      "refKey": "demo-courier-picker",
+      "payload": {
+        "name": "Courier Picker",
+        "description": "Chooses a courier per shipment on cost and reliability.",
+        "tier": "supervised",
+        "riskTier": "medium",
+        "systemPrompt": "You are Courier Picker. Chooses a courier per shipment on cost and reliability. Propose; never act without approval.",
+        "capabilities": [
+          "read",
+          "propose"
+        ],
+        "triggers": [
+          "manual",
+          "schedule"
+        ],
+        "subscribedEvents": [],
+        "evalCases": [],
+        "purpose": "Picks a courier for each shipment from recorded cost and delivered-on-time history.",
+        "limitations": "Reasons from past performance on this lane, which is not a forecast. It cannot see a strike, a closed road, or a courier who has just lost a depot.",
+        "pinnedModel": null
+      }
+    },
+    {
+      "kind": "agent",
+      "refKey": "festive-stock-watch",
+      "payload": {
+        "name": "Festive Stock Watch",
+        "description": "Warn when a festive-season line is going to sell out before the campaign ends.",
+        "tier": "domain",
+        "riskTier": "medium",
+        "systemPrompt": "You are Festive Stock Watch for this merchant. Warn when a festive-season line is going to sell out before the campaign ends. Use the tools you are given; never state a figure you have not read from one.",
+        "capabilities": [
+          "fcc_warehouse_management_view",
+          "fcc_catalog_management_view"
+        ],
+        "triggers": [
+          "stock.movement",
+          "product.status_changed"
+        ],
+        "subscribedEvents": [
+          "stock.movement",
+          "product.status_changed"
+        ],
+        "evalCases": [],
+        "purpose": "Warn when a festive-season line is going to sell out before the campaign ends.",
+        "limitations": "Read-only. Reports what it found and changes nothing.",
+        "pinnedModel": null
+      }
+    },
+    {
+      "kind": "agent",
+      "refKey": "demo-fraud-explainer",
+      "payload": {
+        "name": "Fraud Explainer",
+        "description": "Says in plain words why an order was held.",
+        "tier": "assisted",
+        "riskTier": "medium",
+        "systemPrompt": "You are Fraud Explainer. Says in plain words why an order was held. Propose; never act without approval.",
+        "capabilities": [
+          "read",
+          "propose"
+        ],
+        "triggers": [
+          "manual",
+          "schedule"
+        ],
+        "subscribedEvents": [],
+        "evalCases": [],
+        "purpose": "Explains, in a sentence a support agent can read to a customer, why an order was held.",
+        "limitations": "Explains the decision; it does not make or review it. If the rule that held the order was wrong, this will explain the wrong rule clearly.",
+        "pinnedModel": null
+      }
+    },
+    {
+      "kind": "agent",
+      "refKey": "late-delivery-triage",
+      "payload": {
+        "name": "Late Delivery Triage",
+        "description": "Open a ticket and notify the customer when a shipment misses its promise date.",
+        "tier": "domain",
+        "riskTier": "high",
+        "systemPrompt": "You are Late Delivery Triage for this merchant. Open a ticket and notify the customer when a shipment misses its promise date. Use the tools you are given; never state a figure you have not read from one.",
+        "capabilities": [
+          "fcc_fulfillment_view",
+          "fcc_support_management_configure"
+        ],
+        "triggers": [
+          "shipment.status_changed"
+        ],
+        "subscribedEvents": [
+          "shipment.status_changed"
+        ],
+        "evalCases": [],
+        "purpose": "Open a ticket and notify the customer when a shipment misses its promise date.",
+        "limitations": "Proposes; a human approves every write.",
+        "pinnedModel": null
+      }
+    },
+    {
+      "kind": "agent",
+      "refKey": "demo-listing-doctor",
+      "payload": {
+        "name": "Listing Doctor",
+        "description": "Rewrites thin titles and flags missing attributes.",
+        "tier": "assisted",
+        "riskTier": "medium",
+        "systemPrompt": "You are Listing Doctor. Rewrites thin titles and flags missing attributes. Propose; never act without approval.",
+        "capabilities": [
+          "read",
+          "propose"
+        ],
+        "triggers": [
+          "manual",
+          "schedule"
+        ],
+        "subscribedEvents": [],
+        "evalCases": [],
+        "purpose": "Improves listing titles and names the attributes a category expects and a listing lacks.",
+        "limitations": "Judges the words, not the product. It cannot tell whether a claim in a title is true, and it does not look at the image.",
+        "pinnedModel": null
+      }
+    },
+    {
+      "kind": "agent",
+      "refKey": "margin-guard",
+      "payload": {
+        "name": "Margin Guard",
+        "description": "Flag any repricing that would take a SKU below its floor margin.",
+        "tier": "domain",
+        "riskTier": "high",
+        "systemPrompt": "You are Margin Guard for this merchant. Flag any repricing that would take a SKU below its floor margin. Use the tools you are given; never state a figure you have not read from one.",
+        "capabilities": [
+          "fcc_dynamic_pricing_view",
+          "fcc_pricing_optimizer_view"
+        ],
+        "triggers": [
+          "price.changed"
+        ],
+        "subscribedEvents": [
+          "price.changed"
+        ],
+        "evalCases": [],
+        "purpose": "Flag any repricing that would take a SKU below its floor margin.",
+        "limitations": "Proposes; a human approves every write.",
+        "pinnedModel": null
+      }
+    },
+    {
+      "kind": "agent",
+      "refKey": "demo-margin-watch",
+      "payload": {
+        "name": "Margin Watch",
+        "description": "Alerts when a promotion would sell below the floor.",
+        "tier": "assisted",
+        "riskTier": "medium",
+        "systemPrompt": "You are Margin Watch. Alerts when a promotion would sell below the floor. Propose; never act without approval.",
+        "capabilities": [
+          "read",
+          "propose"
+        ],
+        "triggers": [
+          "manual",
+          "schedule"
+        ],
+        "subscribedEvents": [],
+        "evalCases": [],
+        "purpose": "Warns before a promotion takes a SKU under its floor margin.",
+        "limitations": "Uses the cost recorded against the SKU. It cannot see supplier rebates, freight billed separately, or a cost that changed after the last import.",
+        "pinnedModel": null
+      }
+    },
+    {
+      "kind": "agent",
+      "refKey": "payment-failure-digest",
+      "payload": {
+        "name": "Payment Failure Digest",
+        "description": "Group the day's payment failures by gateway reason and report the pattern.",
+        "tier": "domain",
+        "riskTier": "medium",
+        "systemPrompt": "You are Payment Failure Digest for this merchant. Group the day's payment failures by gateway reason and report the pattern. Use the tools you are given; never state a figure you have not read from one.",
+        "capabilities": [
+          "fcc_payments_view"
+        ],
+        "triggers": [
+          "payment.failed"
+        ],
+        "subscribedEvents": [
+          "payment.failed"
+        ],
+        "evalCases": [],
+        "purpose": "Group the day's payment failures by gateway reason and report the pattern.",
+        "limitations": "Read-only. Reports what it found and changes nothing.",
+        "pinnedModel": null
+      }
+    },
+    {
+      "kind": "agent",
+      "refKey": "demo-payout-reconciler",
+      "payload": {
+        "name": "Payout Reconciler",
+        "description": "Matches settlement to gateway and reports the gap.",
+        "tier": "assisted",
+        "riskTier": "medium",
+        "systemPrompt": "You are Payout Reconciler. Matches settlement to gateway and reports the gap. Propose; never act without approval.",
+        "capabilities": [
+          "read",
+          "propose"
+        ],
+        "triggers": [
+          "manual",
+          "schedule"
+        ],
+        "subscribedEvents": [],
+        "evalCases": [],
+        "purpose": "Matches each settlement against the gateway's own record and reports where they disagree.",
+        "limitations": "Reports the gap; it does not decide who is right. A timing difference across a cutoff and a genuine shortfall look the same to it.",
+        "pinnedModel": null
+      }
+    },
+    {
+      "kind": "agent",
+      "refKey": "demo-refund-triage",
+      "payload": {
+        "name": "Refund Triage",
+        "description": "Decides which refund requests can be auto-approved.",
+        "tier": "assisted",
+        "riskTier": "medium",
+        "systemPrompt": "You are Refund Triage. Decides which refund requests can be auto-approved. Propose; never act without approval.",
+        "capabilities": [
+          "read",
+          "propose"
+        ],
+        "triggers": [
+          "manual",
+          "schedule"
+        ],
+        "subscribedEvents": [],
+        "evalCases": [],
+        "purpose": "Sorts refund requests into those that clearly meet policy and those a person should read.",
+        "limitations": "Reads the request and the order, not the item. It cannot tell a genuine fault from a change of mind described as one, and it never sees the returned goods.",
+        "pinnedModel": null
+      }
+    },
+    {
+      "kind": "agent",
+      "refKey": "review-tone-watch",
+      "payload": {
+        "name": "Review Tone Watch",
+        "description": "Summarise the week's reviews and surface the recurring complaint.",
+        "tier": "domain",
+        "riskTier": "low",
+        "systemPrompt": "You are Review Tone Watch for this merchant. Summarise the week's reviews and surface the recurring complaint. Use the tools you are given; never state a figure you have not read from one.",
+        "capabilities": [
+          "fcc_ratings_reviews_view"
+        ],
+        "triggers": [
+          "review.submitted"
+        ],
+        "subscribedEvents": [
+          "review.submitted"
+        ],
+        "evalCases": [],
+        "purpose": "Summarise the week's reviews and surface the recurring complaint.",
+        "limitations": "Read-only. Reports what it found and changes nothing.",
+        "pinnedModel": null
+      }
+    },
+    {
+      "kind": "agent",
+      "refKey": "search-miss-report",
+      "payload": {
+        "name": "Search Miss Report",
+        "description": "Report searches that returned nothing, so the catalogue team can act.",
+        "tier": "domain",
+        "riskTier": "low",
+        "systemPrompt": "You are Search Miss Report for this merchant. Report searches that returned nothing, so the catalogue team can act. Use the tools you are given; never state a figure you have not read from one.",
+        "capabilities": [
+          "fcc_smart_search_view",
+          "fcc_catalog_management_view"
+        ],
+        "triggers": [
+          "search.performed"
+        ],
+        "subscribedEvents": [
+          "search.performed"
+        ],
+        "evalCases": [],
+        "purpose": "Report searches that returned nothing, so the catalogue team can act.",
+        "limitations": "Read-only. Reports what it found and changes nothing.",
+        "pinnedModel": null
+      }
+    },
+    {
+      "kind": "agent",
+      "refKey": "seller-onboarding-nudge",
+      "payload": {
+        "name": "Seller Onboarding Nudge",
+        "description": "Chase sellers who started onboarding and stalled on documents.",
+        "tier": "domain",
+        "riskTier": "low",
+        "systemPrompt": "You are Seller Onboarding Nudge for this merchant. Chase sellers who started onboarding and stalled on documents. Use the tools you are given; never state a figure you have not read from one.",
+        "capabilities": [
+          "fcc_seller_onboarding_view"
+        ],
+        "triggers": [
+          "application.submitted"
+        ],
+        "subscribedEvents": [
+          "application.submitted"
+        ],
+        "evalCases": [],
+        "purpose": "Chase sellers who started onboarding and stalled on documents.",
+        "limitations": "Read-only. Reports what it found and changes nothing.",
+        "pinnedModel": null
+      }
+    },
+    {
+      "kind": "agent",
+      "refKey": "demo-seller-scorecard",
+      "payload": {
+        "name": "Seller Scorecard",
+        "description": "Builds the weekly seller performance summary.",
+        "tier": "supervised",
+        "riskTier": "medium",
+        "systemPrompt": "You are Seller Scorecard. Builds the weekly seller performance summary. Propose; never act without approval.",
+        "capabilities": [
+          "read",
+          "propose"
+        ],
+        "triggers": [
+          "manual",
+          "schedule"
+        ],
+        "subscribedEvents": [],
+        "evalCases": [],
+        "purpose": "Assembles each seller's week: fulfilment, returns, ratings and disputes, in one place.",
+        "limitations": "Counts what the platform recorded. A seller resolving a problem off-platform looks identical to one who had no problem.",
+        "pinnedModel": null
+      }
+    },
+    {
+      "kind": "agent",
+      "refKey": "settlement-variance",
+      "payload": {
+        "name": "Settlement Variance",
+        "description": "Explain why a seller's payout differs from the previous cycle.",
+        "tier": "domain",
+        "riskTier": "high",
+        "systemPrompt": "You are Settlement Variance for this merchant. Explain why a seller's payout differs from the previous cycle. Use the tools you are given; never state a figure you have not read from one.",
+        "capabilities": [
+          "fcc_settlements_view",
+          "fcc_order_management_view"
+        ],
+        "triggers": [
+          "settlement.batch_processed"
+        ],
+        "subscribedEvents": [
+          "settlement.batch_processed"
+        ],
+        "evalCases": [],
+        "purpose": "Explain why a seller's payout differs from the previous cycle.",
+        "limitations": "Proposes; a human approves every write.",
+        "pinnedModel": null
+      }
+    },
+    {
+      "kind": "agent",
+      "refKey": "demo-stock-chaser",
+      "payload": {
+        "name": "Stock Chaser",
+        "description": "Watches velocity against cover and asks the buyer to reorder.",
+        "tier": "assisted",
+        "riskTier": "medium",
+        "systemPrompt": "You are Stock Chaser. Watches velocity against cover and asks the buyer to reorder. Propose; never act without approval.",
+        "capabilities": [
+          "read",
+          "propose"
+        ],
+        "triggers": [
+          "manual",
+          "schedule"
+        ],
+        "subscribedEvents": [],
+        "evalCases": [],
+        "purpose": "Flags SKUs whose cover will run out before the next delivery lands, and drafts the reorder for a buyer to send.",
+        "limitations": "Trusts the recorded stock figure — it cannot detect shrinkage, damage, or a miscount at the source. It does not know about deliveries agreed by phone and not yet in the system.",
+        "pinnedModel": null
+      }
+    },
+    {
+      "kind": "agent",
+      "refKey": "demo-ticket-summariser",
+      "payload": {
+        "name": "Ticket Summariser",
+        "description": "Condenses a long ticket thread for whoever picks it up.",
+        "tier": "assisted",
+        "riskTier": "medium",
+        "systemPrompt": "You are Ticket Summariser. Condenses a long ticket thread for whoever picks it up. Propose; never act without approval.",
+        "capabilities": [
+          "read",
+          "propose"
+        ],
+        "triggers": [
+          "manual",
+          "schedule"
+        ],
+        "subscribedEvents": [],
+        "evalCases": [],
+        "purpose": "Summarises a long support thread for whoever picks it up next.",
+        "limitations": "Summarises what is written in the ticket. A promise made on a phone call, or a detail somebody never typed, is not in the thread and will not be in the summary.",
+        "pinnedModel": null
+      }
+    },
+    {
+      "kind": "workflow",
+      "refKey": "Catalogue hygiene sweep",
+      "payload": {
+        "description": "Find listings with missing attributes or no images.",
+        "goal": "Find listings with missing attributes or no images.",
+        "fixedPlan": null
+      }
+    },
+    {
+      "kind": "workflow",
+      "refKey": "Festive readiness",
+      "payload": {
+        "description": "Check stock, pricing and promotions are consistent before a campaign opens.",
+        "goal": "Check stock, pricing and promotions are consistent before a campaign opens.",
+        "fixedPlan": null
+      }
+    },
+    {
+      "kind": "workflow",
+      "refKey": "Flash Sale Campaign",
+      "payload": {
+        "description": "Orchestrate a weekend flash sale across pricing, promotions, advertising and stock",
+        "goal": "Run a flash sale for {category} this weekend: apply {discount}% discount, create promotion campaign, update ad budgets, and confirm stock cover for the discounted range",
+        "fixedPlan": null
+      }
+    },
+    {
+      "kind": "workflow",
+      "refKey": "Incident Response",
+      "payload": {
+        "description": "Diagnose and remediate a service incident",
+        "goal": "Investigate and resolve: {service} is experiencing {issue}. Diagnose root cause, propose fix, and apply after approval",
+        "fixedPlan": null
+      }
+    },
+    {
+      "kind": "workflow",
+      "refKey": "Late order recovery",
+      "payload": {
+        "description": "Find delayed orders, notify customers and open tickets where the SLA is missed.",
+        "goal": "Find delayed orders, notify customers and open tickets where the SLA is missed.",
+        "fixedPlan": null
+      }
+    },
+    {
+      "kind": "workflow",
+      "refKey": "Refund backlog clear-down",
+      "payload": {
+        "description": "Work the refund queue oldest first and escalate what is stuck.",
+        "goal": "Work the refund queue oldest first and escalate what is stuck.",
+        "fixedPlan": null
+      }
+    },
+    {
+      "kind": "workflow",
+      "refKey": "Seasonal Clearance",
+      "payload": {
+        "description": "Coordinate end-of-season clearance across catalog, pricing, and marketing",
+        "goal": "Run {season} clearance for {category}: mark down prices by {discount}%, update promotions, and refresh ad campaigns",
+        "fixedPlan": null
+      }
+    },
+    {
+      "kind": "workflow",
+      "refKey": "Seller Onboarding",
+      "payload": {
+        "description": "Provision and configure all core services for a new seller",
+        "goal": "Onboard a new {vertical} seller: import initial catalog, set pricing rules, configure listings, and complete seller registration",
+        "fixedPlan": null
+      }
+    },
+    {
+      "kind": "workflow",
+      "refKey": "Seller payout query",
+      "payload": {
+        "description": "Answer a seller asking why their payout changed.",
+        "goal": "Answer a seller asking why their payout changed.",
+        "fixedPlan": null
+      }
+    },
+    {
+      "kind": "workflow",
+      "refKey": "Weekly trading review",
+      "payload": {
+        "description": "Assemble the numbers a Monday trading meeting asks for.",
+        "goal": "Assemble the numbers a Monday trading meeting asks for.",
+        "fixedPlan": null
+      }
+    },
+    {
       "kind": "role",
       "refKey": "Catalogue Manager",
       "payload": {
@@ -1200,93 +1268,25 @@
       }
     },
     {
-      "kind": "workflow",
-      "refKey": "Catalogue hygiene sweep",
+      "kind": "extension",
+      "refKey": "Fieldstone Rewards",
       "payload": {
-        "description": "Find listings with missing attributes or no images.",
-        "goal": "Find listings with missing attributes or no images.",
-        "fixedPlan": null
-      }
-    },
-    {
-      "kind": "workflow",
-      "refKey": "Festive readiness",
-      "payload": {
-        "description": "Check stock, pricing and promotions are consistent before a campaign opens.",
-        "goal": "Check stock, pricing and promotions are consistent before a campaign opens.",
-        "fixedPlan": null
-      }
-    },
-    {
-      "kind": "workflow",
-      "refKey": "Flash Sale Campaign",
-      "payload": {
-        "description": "Orchestrate a weekend flash sale across pricing, promotions, advertising and stock",
-        "goal": "Run a flash sale for {category} this weekend: apply {discount}% discount, create promotion campaign, update ad budgets, and confirm stock cover for the discounted range",
-        "fixedPlan": null
-      }
-    },
-    {
-      "kind": "workflow",
-      "refKey": "Incident Response",
-      "payload": {
-        "description": "Diagnose and remediate a service incident",
-        "goal": "Investigate and resolve: {service} is experiencing {issue}. Diagnose root cause, propose fix, and apply after approval",
-        "fixedPlan": null
-      }
-    },
-    {
-      "kind": "workflow",
-      "refKey": "Late order recovery",
-      "payload": {
-        "description": "Find delayed orders, notify customers and open tickets where the SLA is missed.",
-        "goal": "Find delayed orders, notify customers and open tickets where the SLA is missed.",
-        "fixedPlan": null
-      }
-    },
-    {
-      "kind": "workflow",
-      "refKey": "Refund backlog clear-down",
-      "payload": {
-        "description": "Work the refund queue oldest first and escalate what is stuck.",
-        "goal": "Work the refund queue oldest first and escalate what is stuck.",
-        "fixedPlan": null
-      }
-    },
-    {
-      "kind": "workflow",
-      "refKey": "Seasonal Clearance",
-      "payload": {
-        "description": "Coordinate end-of-season clearance across catalog, pricing, and marketing",
-        "goal": "Run {season} clearance for {category}: mark down prices by {discount}%, update promotions, and refresh ad campaigns",
-        "fixedPlan": null
-      }
-    },
-    {
-      "kind": "workflow",
-      "refKey": "Seller Onboarding",
-      "payload": {
-        "description": "Provision and configure all core services for a new seller",
-        "goal": "Onboard a new {vertical} seller: import initial catalog, set pricing rules, configure listings, and complete seller registration",
-        "fixedPlan": null
-      }
-    },
-    {
-      "kind": "workflow",
-      "refKey": "Seller payout query",
-      "payload": {
-        "description": "Answer a seller asking why their payout changed.",
-        "goal": "Answer a seller asking why their payout changed.",
-        "fixedPlan": null
-      }
-    },
-    {
-      "kind": "workflow",
-      "refKey": "Weekly trading review",
-      "payload": {
-        "description": "Assemble the numbers a Monday trading meeting asks for.",
-        "goal": "Assemble the numbers a Monday trading meeting asks for.",
-        "fixedPlan": null
+        "name": "Fieldstone Rewards",
+        "description": "Fieldstone's own loyalty scheme. Points earned on paid orders, redeemed at checkout. Built by Fieldstone on the platform APIs.",
+        "publisherId": "cmtn1bfi700top08o7sl12jjs",
+        "acceptedVersion": "1.4.0",
+        "apiUrl": "http://localhost:4500",
+        "ownAddress": "http://localhost:4500",
+        "webhookUrl": "http://localhost:3000/api/extensions/reference-receiver",
+        "contributes": [
+          "checkout"
+        ],
+        "webhooks": [
+          "order.placed"
+        ],
+        "scopes": [
+          "order-management:view"
+        ]
       }
     }
   ],
