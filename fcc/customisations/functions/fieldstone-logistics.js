@@ -1,9 +1,14 @@
 // Fieldstone's own delivery promises. Runs in the platform's sandbox:
 // no network, no credential, and nothing to read but what it asked for.
+// A price book per currency. Not a conversion: A$14.90 is what a van costs
+// in Truganina, not the rupee price at today's rate. A currency with no book
+// is quoted no surcharge, because a rate invented inside a checkout is a
+// charge nobody stands behind.
 var DEFAULTS = {
-  currency: 'INR',
-  sameDaySurchargeMinor: 24900,
-  nextDaySurchargeMinor: 9900,
+  books: {
+    INR: { sameDaySurchargeMinor: 24900, nextDaySurchargeMinor: 9900 },
+    AUD: { sameDaySurchargeMinor: 1490, nextDaySurchargeMinor: 590 }
+  },
   sameDayCapacity: 40,
   cutOffHour: 22
 };
@@ -43,8 +48,9 @@ var options = [{
   currency: input.currency
 }];
 
-if (input.currency !== cfg.currency) {
-  console.log('delivery-slots: basket in ' + input.currency + ', prices in ' + cfg.currency + ' — free options only');
+var book = (cfg.books || {})[input.currency];
+if (!book) {
+  console.log('delivery-slots: no price book for ' + input.currency + ' — free options only');
   return { options: options };
 }
 
@@ -52,8 +58,8 @@ options.unshift({
   id: 'next-day',
   label: 'Next-day delivery',
   detail: 'With you before 6pm tomorrow',
-  surchargeMinor: cfg.nextDaySurchargeMinor,
-  currency: cfg.currency
+  surchargeMinor: book.nextDaySurchargeMinor,
+  currency: input.currency
 });
 
 // The van has to exist before it is sold. Counted out of the same namespace
@@ -69,8 +75,8 @@ if (now.getHours() < cfg.cutOffHour) {
       id: 'same-day',
       label: 'Same-day delivery',
       detail: 'Ordered before ' + cfg.cutOffHour + ':00 — on your doorstep tonight',
-      surchargeMinor: cfg.sameDaySurchargeMinor,
-      currency: cfg.currency
+      surchargeMinor: book.sameDaySurchargeMinor,
+      currency: input.currency
     });
   } else {
     console.log('delivery-slots: same-day full for ' + today + ' (' + booked.length + ' booked)');

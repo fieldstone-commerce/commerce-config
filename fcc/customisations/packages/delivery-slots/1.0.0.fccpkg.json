@@ -6,7 +6,7 @@
     "version": "1.0.0",
     "requiresApi": "v1",
     "originTenant": "fieldstone-dev",
-    "exportedAt": "2026-09-22T02:28:06.986Z"
+    "exportedAt": "2026-09-22T07:04:37.973Z"
   },
   "elements": [
     {
@@ -133,7 +133,7 @@
         "tier": "fullcode",
         "trigger": "manual",
         "triggerKey": null,
-        "code": "// Fieldstone's own delivery promises. Runs in the platform's sandbox:\n// no network, no credential, and nothing to read but what it asked for.\nvar DEFAULTS = {\n  currency: 'INR',\n  sameDaySurchargeMinor: 24900,\n  nextDaySurchargeMinor: 9900,\n  sameDayCapacity: 40,\n  cutOffHour: 22\n};\n\n// The LOCAL date, never the ISO one. `toISOString()` is UTC, and a UTC key\n// with a local cut-off starts booking tomorrow's van at half past six in\n// the evening in Bengaluru — on a day the shopper is still standing in.\nfunction dayKey(d) {\n  return d.getFullYear() + '-' +\n    String(d.getMonth() + 1).padStart(2, '0') + '-' +\n    String(d.getDate()).padStart(2, '0');\n}\n\n// A store that cannot be reached is not a checkout that cannot be used.\n// Every read here falls back, because the alternative is a handler that\n// throws and takes the whole delivery section down with it.\nasync function orElse(promise, fallback) {\n  try { var v = await promise; return v === null || v === undefined ? fallback : v; }\n  catch (e) { console.warn('delivery-slots: store unavailable — ' + e.message); return fallback; }\n}\n\nvar stored = await orElse(host.storage.get('delivery-slots', 'config'), {});\nvar cfg = Object.assign({}, DEFAULTS, stored);\n\nvar now = new Date();\nvar today = dayKey(now);\n\n// Zero is zero in every currency, so the free promise is always safe to\n// make. Everything with a price on it is quoted only in the currency this\n// price book is written in — never converted, because a rate invented\n// inside a checkout is a charge nobody stands behind.\nvar options = [{\n  id: 'standard',\n  label: 'Standard delivery',\n  detail: 'Three to five working days',\n  surchargeMinor: 0,\n  currency: input.currency\n}];\n\nif (input.currency !== cfg.currency) {\n  console.log('delivery-slots: basket in ' + input.currency + ', prices in ' + cfg.currency + ' — free options only');\n  return { options: options };\n}\n\noptions.unshift({\n  id: 'next-day',\n  label: 'Next-day delivery',\n  detail: 'With you before 6pm tomorrow',\n  surchargeMinor: cfg.nextDaySurchargeMinor,\n  currency: cfg.currency\n});\n\n// The van has to exist before it is sold. Counted out of the same namespace\n// the booking handler writes into — if those two ever disagree the count is\n// always zero, capacity never falls, and this reads as healthy for ever.\nif (now.getHours() < cfg.cutOffHour) {\n  var booked = await orElse(\n    host.storage.list('delivery-slots', { prefix: 'booked:' + today + ':same-day:', limit: 200 }),\n    []\n  );\n  if (booked.length < cfg.sameDayCapacity) {\n    options.unshift({\n      id: 'same-day',\n      label: 'Same-day delivery',\n      detail: 'Ordered before ' + cfg.cutOffHour + ':00 — on your doorstep tonight',\n      surchargeMinor: cfg.sameDaySurchargeMinor,\n      currency: cfg.currency\n    });\n  } else {\n    console.log('delivery-slots: same-day full for ' + today + ' (' + booked.length + ' booked)');\n  }\n}\n\nreturn { options: options };",
+        "code": "// Fieldstone's own delivery promises. Runs in the platform's sandbox:\n// no network, no credential, and nothing to read but what it asked for.\n// A price book per currency. Not a conversion: A$14.90 is what a van costs\n// in Truganina, not the rupee price at today's rate. A currency with no book\n// is quoted no surcharge, because a rate invented inside a checkout is a\n// charge nobody stands behind.\nvar DEFAULTS = {\n  books: {\n    INR: { sameDaySurchargeMinor: 24900, nextDaySurchargeMinor: 9900 },\n    AUD: { sameDaySurchargeMinor: 1490, nextDaySurchargeMinor: 590 }\n  },\n  sameDayCapacity: 40,\n  cutOffHour: 22\n};\n\n// The LOCAL date, never the ISO one. `toISOString()` is UTC, and a UTC key\n// with a local cut-off starts booking tomorrow's van at half past six in\n// the evening in Bengaluru — on a day the shopper is still standing in.\nfunction dayKey(d) {\n  return d.getFullYear() + '-' +\n    String(d.getMonth() + 1).padStart(2, '0') + '-' +\n    String(d.getDate()).padStart(2, '0');\n}\n\n// A store that cannot be reached is not a checkout that cannot be used.\n// Every read here falls back, because the alternative is a handler that\n// throws and takes the whole delivery section down with it.\nasync function orElse(promise, fallback) {\n  try { var v = await promise; return v === null || v === undefined ? fallback : v; }\n  catch (e) { console.warn('delivery-slots: store unavailable — ' + e.message); return fallback; }\n}\n\nvar stored = await orElse(host.storage.get('delivery-slots', 'config'), {});\nvar cfg = Object.assign({}, DEFAULTS, stored);\n\nvar now = new Date();\nvar today = dayKey(now);\n\n// Zero is zero in every currency, so the free promise is always safe to\n// make. Everything with a price on it is quoted only in the currency this\n// price book is written in — never converted, because a rate invented\n// inside a checkout is a charge nobody stands behind.\nvar options = [{\n  id: 'standard',\n  label: 'Standard delivery',\n  detail: 'Three to five working days',\n  surchargeMinor: 0,\n  currency: input.currency\n}];\n\nvar book = (cfg.books || {})[input.currency];\nif (!book) {\n  console.log('delivery-slots: no price book for ' + input.currency + ' — free options only');\n  return { options: options };\n}\n\noptions.unshift({\n  id: 'next-day',\n  label: 'Next-day delivery',\n  detail: 'With you before 6pm tomorrow',\n  surchargeMinor: book.nextDaySurchargeMinor,\n  currency: input.currency\n});\n\n// The van has to exist before it is sold. Counted out of the same namespace\n// the booking handler writes into — if those two ever disagree the count is\n// always zero, capacity never falls, and this reads as healthy for ever.\nif (now.getHours() < cfg.cutOffHour) {\n  var booked = await orElse(\n    host.storage.list('delivery-slots', { prefix: 'booked:' + today + ':same-day:', limit: 200 }),\n    []\n  );\n  if (booked.length < cfg.sameDayCapacity) {\n    options.unshift({\n      id: 'same-day',\n      label: 'Same-day delivery',\n      detail: 'Ordered before ' + cfg.cutOffHour + ':00 — on your doorstep tonight',\n      surchargeMinor: book.sameDaySurchargeMinor,\n      currency: input.currency\n    });\n  } else {\n    console.log('delivery-slots: same-day full for ' + today + ' (' + booked.length + ' booked)');\n  }\n}\n\nreturn { options: options };",
         "enabled": true
       }
     },
@@ -146,6 +146,18 @@
         "trigger": "manual",
         "triggerKey": null,
         "code": "// Books the van and writes the promise onto the order, so fulfilment sees\n// what the shopper was actually sold rather than inferring it from a total.\nvar chosen = input.fulfilment;\nif (!chosen || !chosen.id) return {};\n\nfunction dayKey(d) {\n  return d.getFullYear() + '-' +\n    String(d.getMonth() + 1).padStart(2, '0') + '-' +\n    String(d.getDate()).padStart(2, '0');\n}\n\nvar day = dayKey(new Date());\n\n// Keyed on the ORDER. The money has already moved by the time this runs, so\n// it can be called again after a retry — and a key derived from anything\n// else (a timestamp, a counter) would be a second van for one delivery.\nvar booked = { written: false, reason: 'store unavailable' };\ntry {\n  booked = await host.storage.put(\n    'delivery-slots',\n    'booked:' + day + ':' + chosen.id + ':' + input.orderId,\n    {\n      orderId: input.orderId,\n      slot: chosen.id,\n      label: chosen.label,\n      surchargeMinor: chosen.surchargeMinor,\n      currency: input.currency,\n      at: new Date().toISOString()\n    }\n  );\n} catch (e) {\n  console.error('delivery-slots: could not book ' + chosen.id + ' — ' + e.message);\n}\n\n// The attributes go on the order whether or not the van was reserved. A\n// shopper who paid a surcharge is owed a record of what for, and 'no' here\n// is what tells a dispatcher to look rather than to assume.\nreturn {\n  attributes: {\n    'delivery-slot': String(chosen.label || chosen.id),\n    'delivery-slot-id': String(chosen.id),\n    'delivery-surcharge-minor': String(chosen.surchargeMinor || 0),\n    'delivery-currency': String(input.currency || ''),\n    'delivery-booked': booked && booked.written ? 'yes' : 'no'\n  }\n};",
+        "enabled": true
+      }
+    },
+    {
+      "kind": "custom-function",
+      "refKey": "Fieldstone Shop Floor",
+      "payload": {
+        "name": "Fieldstone Shop Floor",
+        "tier": "fullcode",
+        "trigger": "manual",
+        "triggerKey": null,
+        "code": "// Fieldstone's own judgement about when a shopper needs a hand. Runs in the\n// platform's sandbox: no network, no credential, and nothing to read but a\n// counter it keeps itself.\nvar DEFAULTS = {\n  searchesBeforeOffering: 3,\n  viewsBeforeOffering: 6,\n  sessionMinutes: 45,\n  offerText: 'Can I help you find something? Tell me about the room rather than the product.',\n  acceptLabel: 'Yes please',\n  opening: 'Tell me about the space — how big is it, and what has to go in it?'\n};\n\n// A store that cannot be reached costs the OFFER, never the shop. Falling\n// back to a fresh tally means the counters never accumulate and nothing is\n// ever offered; falling back the other way would nag every shopper on every\n// page for as long as the outage lasted.\nasync function orElse(promise, fallback) {\n  try { var v = await promise; return v === null || v === undefined ? fallback : v; }\n  catch (e) { console.warn('browsing-help: store unavailable — ' + e.message); return fallback; }\n}\n\nvar cfg = Object.assign({}, DEFAULTS, await orElse(host.storage.get('browsing-help', 'config'), {}));\n\n// No visit id, no tally. The platform mints one per visit and passes what\n// the browser sent; an absent one means a request that cannot be counted\n// against anything, and counting it against everybody would be worse.\nvar visit = String(input.sessionId || '');\nif (!visit) return {};\n\nvar now = Date.now();\nvar key = 'visit:' + visit;\nvar state = await orElse(host.storage.get('browsing-help', key), null);\n\n// A tally older than a visit is a new visit. Resuming it would ask somebody\n// whether they needed help on the first search of the following morning.\nif (!state || typeof state !== 'object' ||\n    now - Number(state.at || 0) > cfg.sessionMinutes * 60000) {\n  state = { searches: 0, views: 0, dismissed: false, at: now };\n}\n\nasync function remember() {\n  state.at = now;\n  try { await host.storage.put('browsing-help', key, state); }\n  catch (e) { console.warn('browsing-help: could not write the tally — ' + e.message); }\n}\n\n// No is final, for this visit, and it is remembered HERE rather than in the\n// page. A flag in the browser is defeated by a second tab and by a reload,\n// and a prompt that comes back is the one thing everybody hates about this.\nif (input.signal === 'dismissed') {\n  state.dismissed = true;\n  await remember();\n  return {};\n}\nif (state.dismissed) return {};\n\n// Something in the basket is a shopper who IS getting somewhere. Checked\n// before the counters move, so a person who is buying is never counted\n// towards being stuck.\nif (Number(input.basketItemCount || 0) > 0) return {};\n\nif (input.signal === 'search') state.searches = Number(state.searches || 0) + 1;\nelse if (input.signal === 'view') state.views = Number(state.views || 0) + 1;\nelse return {};\nawait remember();\n\n// The thresholds are cfg's, never DEFAULTS'. A constant here would be\n// Fieldstone's opinion frozen into code their own staff cannot change,\n// which is the same mistake as the platform holding it — one step further\n// from the person whose shop it is.\nif (state.searches < cfg.searchesBeforeOffering && state.views < cfg.viewsBeforeOffering) {\n  return {};\n}\n\nconsole.log('browsing-help: offering after ' + state.searches + ' searches and ' + state.views + ' views');\nreturn {\n  elements: [{\n    type: 'prompt',\n    action: 'open-assistant',\n    text: cfg.offerText,\n    accept: cfg.acceptLabel,\n    ask: cfg.opening\n  }]\n};",
         "enabled": true
       }
     },
@@ -1209,6 +1221,22 @@
     },
     {
       "kind": "ui-surface",
+      "refKey": "assistant.offer",
+      "payload": {
+        "slot": "assistant.offer",
+        "source": "function",
+        "extensionName": null,
+        "functionName": "Fieldstone Shop Floor",
+        "bundleName": null,
+        "bundleSourcePath": null,
+        "embedUrl": null,
+        "readsCollection": "browsing-help",
+        "scopes": "[]",
+        "enabled": true
+      }
+    },
+    {
+      "kind": "ui-surface",
       "refKey": "checkout.fulfilment",
       "payload": {
         "slot": "checkout.fulfilment",
@@ -1262,5 +1290,5 @@
       }
     }
   ],
-  "checksum": "fnv1a-b36ef77d-94"
+  "checksum": "fnv1a-001ce5f2-96"
 }
