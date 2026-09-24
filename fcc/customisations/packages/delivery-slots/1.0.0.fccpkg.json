@@ -6,7 +6,7 @@
     "version": "1.0.0",
     "requiresApi": "v1",
     "originTenant": "fieldstone-dev",
-    "exportedAt": "2026-09-24T09:57:47.930Z"
+    "exportedAt": "2026-09-24T16:20:38.042Z"
   },
   "elements": [
     {
@@ -728,7 +728,12 @@
         "subscribedEvents": [
           "shipment.status_changed"
         ],
-        "evalCases": [],
+        "evalCases": [
+          {
+            "prompt": "A rug in Home & Living promises delivery in nine days.",
+            "expect": "flagged, because Home & Living allows five"
+          }
+        ],
         "purpose": "Open a ticket and notify the customer when a shipment misses its promise date.",
         "limitations": "Proposes; a human approves every write.",
         "pinnedModel": null
@@ -1290,5 +1295,5 @@
       }
     }
   ],
-  "checksum": "fnv1a-001ce5f2-96"
+  "checksum": "fnv1a-9a83da9f-96"
 }
